@@ -9,7 +9,7 @@ mrkl = MerkleTree.new('1', '2', '3', '4', '5')
 puts "Root of the Merkle Tree: #{mrkl.root.value}"
 
 # Виведення листів дерева
-puts "Leaves of the Merkle Tree: #{mrkl.leaves}"
+puts "\nLeaves of the Merkle Tree: #{mrkl.leaves}"
 
 # Виведення хешів всіх вузлів дерева
 pp mrkl
@@ -23,8 +23,8 @@ merkle = MerkleTree.for(
   { from: "Anne",       to: "Dima",       what: "Candy",          qty: 4 },
   { from: "Anton",      to: "Julia",      what: "Pie",            qty: 5 } )
 
-puts "Root of the Merkle Tree (transaction): #{merkle.root.value}"
+puts "\nRoot of the Merkle Tree (transaction): #{merkle.root.value}"
 
-puts "Leaves of the Merkle Tree (transaction): #{mrkl.leaves}"
+puts "\nLeaves of the Merkle Tree (transaction): #{merkle.leaves}"
 
 pp merkle
