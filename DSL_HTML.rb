@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
+# Class HTMLGenerator for dynamically generating HTML content
 class HTMLGenerator
+  # Initializes an HTMLGenerator instance
+  # The instance variable @html holds the generated HTML content
+  # The provided block is evaluated within the instance's context
   def initialize(&block)
     @html = String.new
     instance_eval(&block)
   end
 
+  # Handles undefined method calls to create HTML tags dynamically
+  # Differentiates between self-closing tags and regular tags
   def method_missing(name, *args, &block)
     attributes, content = parse_args(args)
 
@@ -19,14 +25,17 @@ class HTMLGenerator
     end
   end
 
+  # Specialized method for adding paragraph tags
   def p(content = "", **attributes, &block)
     add_tag(:p, content, attributes, &block)
   end
 
+  # Returns the generated HTML content as a string
   def to_s
     @html
   end
 
+  # Saves the generated HTML content to a file
   def save_to_file(filename)
     File.open(filename, "w") do |file|
       file.write(to_s)
@@ -35,6 +44,7 @@ class HTMLGenerator
 
   private
 
+  # Parses arguments to separate attributes and content
   def parse_args(args)
     attributes = {}
     content = ""
@@ -50,6 +60,7 @@ class HTMLGenerator
     [attributes, content]
   end
 
+  # Helper method to add tags to the HTML content
   def add_tag(name, content = "", attributes = {}, &block)
     @html << "<#{name}#{format_attributes(attributes)}>"
     @html << content
@@ -57,16 +68,18 @@ class HTMLGenerator
     @html << "</#{name}>"
   end
 
+  # Formats HTML tag attributes into a string
   def format_attributes(attributes)
     attributes.map { |key, value| " #{key}='#{value}'" }.join
   end
 
+  # Checks if a tag is self-closing
   def self_closing_tag?(tag_name)
     %i[area base br col embed hr img input link meta param source track wbr].include?(tag_name)
   end
 end
 
-
+# Example usage of HTMLGenerator
 html = HTMLGenerator.new do
   html do
     head do
@@ -98,5 +111,6 @@ html = HTMLGenerator.new do
   end
 end
 
+# Output the generated HTML and save it to a file
 puts html.to_s
 html.save_to_file("output.html")
